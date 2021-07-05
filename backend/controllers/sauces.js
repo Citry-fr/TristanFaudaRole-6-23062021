@@ -43,5 +43,45 @@ exports.deleteSauce = (req, res, next) => {
                     .catch(error => res.status(400).json({ error }));
             })
         })
-        .catch(error => res.status(400).json({ error }));
+        .catch(error => res.status(500).json({ error }));
+}
+
+exports.likeSauce = (req, res, next) => {
+    Sauce.findOne({_id: req.params.id})
+        .then(sauce => {
+            let likeTab = sauce.usersLiked;
+            let dislikeTab = sauce.usersDisliked;
+            let like = parseInt(req.query.like);
+            let user = req.query.UserId;
+            let index;
+            switch (like) {
+                case 1:
+                    likeTab.push(user);
+                    index = dislikeTab.indexOf(user);
+                    if(index > -1) dislikeTab.splice(index, 1);
+                    break;                
+                case -1:
+                    dislikeTab.push(user);                    
+                    index = likeTab.indexOf(user);
+                    if(index > -1) likeTab.splice(index, 1);
+                    break;
+                case 0:
+                    index = dislikeTab.indexOf(user);
+                    if(index > -1) dislikeTab.splice(index, 1);
+                    index = likeTab.indexOf(user);
+                    if(index > -1) likeTab.splice(index, 1);
+                    break;
+                default:
+                    console.log("default");
+                    break;
+            }
+            console.log("like :" + likeTab);
+            console.log("dislike : " + dislikeTab);
+            sauce.usersLiked = likeTab;
+            sauce.usersDisliked = dislikeTab;
+            sauce.save()
+            .then(() => res.status(201).json({ message: 'Post sauvegardé !' }))
+            .catch(error => res.status(400).json({ error }));
+        })
+        .catch(error => res.status(500).json({ error }));
 }
