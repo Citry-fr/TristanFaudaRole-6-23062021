@@ -49,39 +49,35 @@ exports.deleteSauce = (req, res, next) => {
 exports.likeSauce = (req, res, next) => {
     Sauce.findOne({_id: req.params.id})
         .then(sauce => {
-            let likeTab = sauce.usersLiked;
-            let dislikeTab = sauce.usersDisliked;
-            let like = parseInt(req.query.like);
-            let user = req.query.UserId;
-            let index;
+            const {userId, like} = req.body;
+            let index = -1;
             switch (like) {
                 case 1:
-                    likeTab.push(user);
-                    index = dislikeTab.indexOf(user);
-                    if(index > -1) dislikeTab.splice(index, 1);
-                    break;                
+                    sauce.usersLiked.push(userId);
+                    sauce.likes++
+                    break;          
                 case -1:
-                    dislikeTab.push(user);                    
-                    index = likeTab.indexOf(user);
-                    if(index > -1) likeTab.splice(index, 1);
+                    sauce.usersDisliked.push(userId);
+                    sauce.dislikes++
                     break;
                 case 0:
-                    index = dislikeTab.indexOf(user);
-                    if(index > -1) dislikeTab.splice(index, 1);
-                    index = likeTab.indexOf(user);
-                    if(index > -1) likeTab.splice(index, 1);
+                    index = sauce.usersDisliked.indexOf(userId);
+                    if(index > -1){
+                        sauce.usersDisliked.splice(index, 1);
+                        sauce.dislikes--;
+                    }
+                    index = sauce.usersLiked.indexOf(userId);
+                    if(index > -1) {
+                        sauce.usersLiked.splice(index, 1);
+                        sauce.likes--;
+                    }
                     break;
                 default:
-                    console.log("default");
                     break;
             }
-            console.log("like :" + likeTab);
-            console.log("dislike : " + dislikeTab);
-            sauce.usersLiked = likeTab;
-            sauce.usersDisliked = dislikeTab;
             sauce.save()
-            .then(() => res.status(201).json({ message: 'Post sauvegardé !' }))
-            .catch(error => res.status(400).json({ error }));
+                .then(() => res.status(201).json({ message: 'Post sauvegardé !' }))
+                .catch(error => res.status(400).json({ error }));
         })
         .catch(error => res.status(500).json({ error }));
 }
