@@ -3,10 +3,12 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const path = require('path');
 
+require('dotenv').config();
+
 const saucesRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/user');
 
-mongoose.connect('mongodb+srv://citry:3MMqF0NeaoOltK3q@cluster0.inyvs.mongodb.net/projetOpenClassroom?retryWrites=true&w=majority', 
+mongoose.connect(process.env.DB_URL, 
     { 
         useNewUrlParser: true,
         useUnifiedTopology: true
