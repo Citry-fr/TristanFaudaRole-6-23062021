@@ -1,10 +1,10 @@
-TristanFaudaRole-6-23062021
+# OpenClassroom projet 6 : So Pekocko
 
 ## Lancement serveur Front-End et Back-End
 
 Ouvrez deux terminals a la racine du projet.
 
-## Front-end
+### Front-end
 
 Effectuer les commandes suivante dans votre premier terminal :
 
@@ -15,7 +15,7 @@ ng serve
 
 Le serveur front-end est maintenant lancé à l'adresse : http://localhost:4200/
 
-## Back-end
+### Back-end
 
 Effectuer les commandes suivante dans votre deuxième terminal :
 
@@ -26,6 +26,6 @@ node server
 
 Le serveur back-end est maintenant lancé à l'adresse : http://localhost:3000/
 
-## Notes
+### Notes
 
 Pour ce projet le dossier node_modules a était commit selon les spécification de mon mentor, dans le cadre de travail en entreprise, ce dossier n'aurait pas était commit.
