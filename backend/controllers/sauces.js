@@ -1,6 +1,9 @@
+//Importation du schéma sauce
 const Sauce = require('../models/Sauce');
+//Importation du package FileSystem
 const fs = require('fs');
 
+//Route pour récupérer toutes les sauces
 exports.getAllSauces = (req, res, next) => {
     Sauce.find()
         .then((sauces) => {
@@ -9,6 +12,7 @@ exports.getAllSauces = (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
 };
 
+//Route pour créer une sauce
 exports.createSauce = (req, res, next) => {    
     const sauceObject = JSON.parse(req.body.sauce);
     delete sauceObject._id;
@@ -21,12 +25,14 @@ exports.createSauce = (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
 };
 
+//Route pour récupérer une sauce
 exports.getOneSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id})
         .then(sauce => res.status(200).json(sauce))
         .catch(error => res.status(404).json({ error }));
 };
 
+//Route pour modifier une sauces
 exports.modifySauce = (req, res, next) => {
     const sauceObject = req.file ? 
     {
@@ -38,6 +44,7 @@ exports.modifySauce = (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
 };
 
+//Route pour récupérer toutes le sauces
 exports.deleteSauce = (req, res, next) => {
     Sauce.findOne({_id: req.params.id})
         .then( sauce => {
@@ -51,6 +58,7 @@ exports.deleteSauce = (req, res, next) => {
         .catch(error => res.status(500).json({ error }));
 }
 
+//Route pour modifier une sauce selon le type de like
 exports.likeSauce = (req, res, next) => {
     Sauce.findOne({_id: req.params.id})
         .then(sauce => {
