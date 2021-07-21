@@ -39,9 +39,22 @@ exports.modifySauce = (req, res, next) => {
         ...JSON.parse(req.body.sauce),
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     } : { ...req.body };
-    Sauce.updateOne({ _id: req.params.id}, {...sauceObject, _id: req.params.id})
-        .then(() => res.status(200).json({ message: 'Objet modifié !' }))
-        .catch(error => res.status(400).json({ error }));
+    Sauce.findOne({_id: req.params.id})
+        .then( sauce => {
+            if(req.file){
+                const filename = sauce.imageUrl.split('/images/')[1];
+                fs.unlink(`images/${filename}`, () => {
+                    Sauce.updateOne( sauce, {...sauceObject, _id: req.params.id})
+                        .then(() => res.status(200).json({ message: 'Objet modifié !' }))
+                        .catch(error => res.status(400).json({ error }));
+                });
+            } else {
+                Sauce.updateOne( sauce, {...sauceObject, _id: req.params.id})
+                    .then(() => res.status(200).json({ message: 'Objet modifié !' }))
+                    .catch(error => res.status(400).json({ error }));
+            }
+        })
+        .catch(error => res.status(500).json({ error }));
 };
 
 //Route pour récupérer toutes le sauces
