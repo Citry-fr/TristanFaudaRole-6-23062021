@@ -8,8 +8,10 @@ Ouvrez deux terminals a la racine du projet.
 
 Effectuer les commandes suivante dans votre premier terminal :
 
-> cd frontend/
-> ng serve
+```
+cd frontend/
+ng serve
+```
 
 Le serveur front-end est maintenant lancé à l'adresse : http://localhost:4200/
 
@@ -17,8 +19,10 @@ Le serveur front-end est maintenant lancé à l'adresse : http://localhost:4200/
 
 Effectuer les commandes suivante dans votre deuxième terminal :
 
-> cd backend/
-> node server
+```
+cd backend/
+node server
+```
 
 Le serveur back-end est maintenant lancé à l'adresse : http://localhost:3000/
 
