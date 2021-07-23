@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const path = require('path');
 const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
 //Configuration de dotenv
 require('dotenv').config();
@@ -11,6 +12,12 @@ require('dotenv').config();
 //Importation des routes api
 const saucesRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/user');
+
+// Configuration rateLimit
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100
+});
 
 //Connection à la base de données Mongoose
 mongoose.connect(process.env.DB_URI, 
@@ -23,6 +30,9 @@ mongoose.connect(process.env.DB_URI,
 
 //Initialisation de l'application express
 const app = express();
+
+// Utilisation de rateLimit
+app.use(limiter);
 
 //Utilisation de helmet pour protéger les Headers
 app.use(helmet());
