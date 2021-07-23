@@ -1,9 +1,9 @@
 //Importation des packages bcrypt et jsonwebtoken
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
 //Importation du schéma User
 const User = require('../models/User');
+
 
 //Route d'inscription d'un utilisateur
 exports.signup = (req, res, next) => {
