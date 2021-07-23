@@ -2,7 +2,9 @@
 const express = require('express');
 const router = express.Router();
 
+// Importation du middleware
 const passValid = require('../middleware/passValid');
+
 //Importation du controleur user
 const userCtrl = require('../controllers/user');
 

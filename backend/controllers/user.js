@@ -1,6 +1,8 @@
 //Importation des packages bcrypt et jsonwebtoken
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
+const cryptoJs = require('crypto-js');
 //Importation du schéma User
 const User = require('../models/User');
 
@@ -10,7 +12,7 @@ exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
             const user = new User({
-                email: req.body.email,
+                email: cryptoJs.SHA256(req.body.email).toString(),
                 password: hash
             });
             user.save()
@@ -22,7 +24,7 @@ exports.signup = (req, res, next) => {
 
 //Route de connexion d'un utilisateur
 exports.login = (req, res, next) => {
-    User.findOne({ email: req.body.email })
+    User.findOne({ email: cryptoJs.SHA256(req.body.email).toString() })
         .then(user => {
             if(!user){
                 return res.status(401).json({ error: 'Utilisateur non trouvé !' });
